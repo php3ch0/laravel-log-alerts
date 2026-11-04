@@ -53,6 +53,12 @@ class EmailCriticalLogSummary extends Command
             return 0;
         }
 
+        if (!app()->environment('production')) {
+            $this->info('Not sending the log alert email because APP_ENV is not production.');
+
+            return 0;
+        }
+
         $recipient = config('log-alerts.recipient');
         if (!is_string($recipient) || filter_var($recipient, FILTER_VALIDATE_EMAIL) === false) {
             $this->error('Set a valid DEVELOPER_EMAIL in the application .env file.');

@@ -12,20 +12,7 @@ and emails a concise summary of recent `EMERGENCY`, `ALERT`, `CRITICAL`, and
 
 ## Install
 
-Add this Git repository to the consuming application's `composer.json`:
-
-```json
-{
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/php3ch0/laravel-log-alerts.git"
-        }
-    ]
-}
-```
-
-Then install it:
+Install the package from [Packagist](https://packagist.org/packages/seadragon/laravel-log-alerts):
 
 ```sh
 composer require seadragon/laravel-log-alerts
@@ -43,6 +30,10 @@ MAIL_MAILER=smtp
 The package reads `DEVELOPER_EMAIL` as the email destination. If configuration
 is cached, rebuild the cache after changing `.env` with
 `php artisan config:cache`.
+
+Email alerts are sent only when `APP_ENV=production`. In other environments the
+command reports that it skipped sending; `--dry-run` still displays the summary
+without sending an email.
 
 ## How it works
 
@@ -70,10 +61,9 @@ following cron entry for each application using the package:
 
 ## Distribution
 
-Composer can install the package directly from this VCS repository as shown
-above. If the repository is private, the consuming environment must have Git
-credentials. For public distribution through Packagist.org, publish the package
-there and install it without a VCS repository entry.
+The package is published on [Packagist](https://packagist.org/packages/seadragon/laravel-log-alerts).
+Its source code is hosted at
+[github.com/php3ch0/laravel-log-alerts](https://github.com/php3ch0/laravel-log-alerts).
 
 ## Development
 
