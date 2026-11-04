@@ -37,7 +37,8 @@ without sending an email.
 
 ## How it works
 
-The package registers `log-alerts:email` and schedules it daily. It scans:
+The package registers `log-alerts:email` and schedules it daily at 08:00 UTC. It
+scans:
 
 - `storage/logs/laravel.log`
 - `storage/logs/laravel-YYYY-MM-DD.log` files spanning the last 24-hour window

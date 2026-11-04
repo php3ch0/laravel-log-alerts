@@ -26,7 +26,7 @@ class LogAlertServiceProvider extends ServiceProvider
         ), 'log-alerts-config');
 
         $this->app->afterResolving(Schedule::class, function (Schedule $schedule) {
-            $schedule->command('log-alerts:email')->daily();
+            $schedule->command('log-alerts:email')->dailyAt('08:00')->timezone('UTC');
         });
     }
 }
