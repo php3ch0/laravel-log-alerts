@@ -36,7 +36,7 @@ class LogEntryScannerTest extends TestCase
     {
         file_put_contents(
             $this->directory.DIRECTORY_SEPARATOR.'laravel-2026-06-01.log',
-            "[2026-06-01 12:00:00] production.ERROR: Example failure {\"userId\":42}\n".
+            "[2026-06-01 12:00:00] production.ERROR: Example failure {\"userId\":42,\"exception\":\"[object] (Error(code: 0): Example failure at /app/Http/Controllers/AddressesController.php:148)\"}\n".
             "[2026-06-01 12:01:00] production.INFO: Routine message\n".
             "[2026-06-01 12:02:00] production.CRITICAL: Critical failure\n".
             "[2026-06-01 08:00:00] production.CRITICAL: Outside window\n"
@@ -63,5 +63,6 @@ class LogEntryScannerTest extends TestCase
             return $entry['level'] === 'ERROR';
         }));
         $this->assertSame('Example failure', $error[0]['message']);
+        $this->assertSame('/app/Http/Controllers/AddressesController.php:148', $error[0]['location']);
     }
 }

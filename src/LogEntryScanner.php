@@ -27,7 +27,7 @@ class LogEntryScanner
     /**
      * Return selected Laravel log entries in the requested time window.
      *
-     * @return array<int, array{level: string, message: string}>
+     * @return array<int, array{level: string, message: string, location: string|null}>
      */
     public function findBetween(DateTimeImmutable $start, DateTimeImmutable $end)
     {
@@ -55,8 +55,11 @@ class LogEntryScanner
                     continue;
                 }
 
+                $location = $this->extractLocation($matches[3]);
+
                 // Monolog appends structured context as JSON. Keep the
-                // human-readable message, not potentially sensitive context.
+                // human-readable message and source location, not other
+                // potentially sensitive context.
                 $message = preg_replace('/\s+\{.*$/', '', $matches[3]);
                 $message = trim($message);
                 if ($message === '') {
@@ -66,6 +69,7 @@ class LogEntryScanner
                 $entries[] = array(
                     'level' => strtoupper($matches[2]),
                     'message' => substr(preg_replace('/\s+/', ' ', $message), 0, 300),
+                    'location' => $location,
                 );
             }
 
@@ -73,6 +77,20 @@ class LogEntryScanner
         }
 
         return $entries;
+    }
+
+    /**
+     * Extract the exception source location from Laravel's serialized exception context.
+     *
+     * @return string|null
+     */
+    protected function extractLocation($text)
+    {
+        if (preg_match('/\b(?:at|in)\s+([^\s()]+\.php):(\d+)\b/i', $text, $matches)) {
+            return $matches[1].':'.$matches[2];
+        }
+
+        return null;
     }
 
     /**

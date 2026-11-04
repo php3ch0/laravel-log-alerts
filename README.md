@@ -44,8 +44,9 @@ scans:
 - `storage/logs/laravel-YYYY-MM-DD.log` files spanning the last 24-hour window
 
 Only entries in the last 24 hours are included. Repeated messages are grouped;
-the email contains counts and short first-line summaries, not stack traces or
-structured log context. No email is sent when there are no matching entries.
+the email contains counts, short first-line summaries, and the exception source
+file and line number when available. Other structured log context and stack
+traces are omitted. No email is sent when there are no matching entries.
 
 Preview the report without sending an email:
 

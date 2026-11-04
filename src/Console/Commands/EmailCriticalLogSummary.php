@@ -85,7 +85,7 @@ class EmailCriticalLogSummary extends Command
     /**
      * Build a concise report, grouping repeated messages and omitting stack traces.
      *
-     * @param array<int, array{level: string, message: string}> $entries
+     * @param array<int, array{level: string, message: string, location?: string|null}> $entries
      */
     protected function buildSummary($siteName, DateTimeImmutable $start, DateTimeImmutable $end, array $entries)
     {
@@ -98,11 +98,13 @@ class EmailCriticalLogSummary extends Command
             }
             $levelCounts[$entry['level']]++;
 
-            $key = $entry['level'].'|'.strtolower($entry['message']);
+            $location = isset($entry['location']) ? $entry['location'] : null;
+            $key = $entry['level'].'|'.strtolower($entry['message']).'|'.$location;
             if (!isset($messageCounts[$key])) {
                 $messageCounts[$key] = array(
                     'level' => $entry['level'],
                     'message' => $entry['message'],
+                    'location' => $location,
                     'count' => 0,
                 );
             }
@@ -130,7 +132,11 @@ class EmailCriticalLogSummary extends Command
         $lines[] = '';
         $lines[] = 'Most frequent error summaries (up to 30):';
         foreach (array_slice($messageCounts, 0, 30) as $item) {
-            $lines[] = '- ['.$item['level'].'] '.$item['count'].' occurrence(s): '.$item['message'];
+            $line = '- ['.$item['level'].'] '.$item['count'].' occurrence(s): '.$item['message'];
+            if ($item['location'] !== null) {
+                $line .= ' (at '.$item['location'].')';
+            }
+            $lines[] = $line;
         }
 
         return implode("\n", $lines);
