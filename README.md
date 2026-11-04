@@ -1,6 +1,6 @@
-# Seadragon Laravel Log Alerts
+# Laravel Log Alerts
 
-Private Composer package that checks Laravel's standard log files once per day
+Composer package that checks Laravel's standard log files once per day
 and emails a concise summary of recent `EMERGENCY`, `ALERT`, `CRITICAL`, and
 `ERROR` entries.
 
@@ -12,15 +12,14 @@ and emails a concise summary of recent `EMERGENCY`, `ALERT`, `CRITICAL`, and
 
 ## Install
 
-Add the package's private Git repository to the consuming application's
-`composer.json` (update the URL for the repository where you publish it):
+Add this Git repository to the consuming application's `composer.json`:
 
 ```json
 {
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@github.com:seadragon/laravel-log-alerts.git"
+            "url": "https://github.com/php3ch0/laravel-log-alerts.git"
         }
     ]
 }
@@ -69,13 +68,12 @@ following cron entry for each application using the package:
 * * * * * cd /path/to/application && php artisan schedule:run >> /dev/null 2>&1
 ```
 
-## Private distribution
+## Distribution
 
-For a private Git repository, Composer can install it directly from the VCS
-repository as shown above, subject to the consuming environment having Git
-credentials. Packagist.org is for public packages; for private distribution,
-use Private Packagist or keep the VCS repository entry in each consuming
-application.
+Composer can install the package directly from this VCS repository as shown
+above. If the repository is private, the consuming environment must have Git
+credentials. For public distribution through Packagist.org, publish the package
+there and install it without a VCS repository entry.
 
 ## Development
 
@@ -83,5 +81,3 @@ application.
 composer install
 composer test
 ```
-
-The package is proprietary and is intended for Seadragon Digital projects.
